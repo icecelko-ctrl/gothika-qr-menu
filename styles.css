@@ -51,7 +51,7 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -2;
-  background-image: url("images/menu-webp/img-7212.webp");
+  background-image: url("menu-webp/img-7212.webp");
   background-position: center top;
   background-size: cover;
   opacity: 0.12;
@@ -84,7 +84,7 @@ p {
   background:
     linear-gradient(180deg, rgba(5, 5, 5, 0.34), rgba(5, 5, 5, 0.74) 74%, var(--black)),
     linear-gradient(90deg, rgba(5, 5, 5, 0.82), rgba(5, 5, 5, 0.28), rgba(5, 5, 5, 0.76)),
-    url("images/menu-webp/img-7212.webp") center / cover;
+    url("menu-webp/img-7212.webp") center / cover;
 }
 
 .hero::before {
@@ -735,4 +735,5 @@ h1 {
     transition-duration: 1ms !important;
   }
 }
+
 
