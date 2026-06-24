@@ -7,15 +7,18 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main>
+    <main class="app-frame" aria-label="QR-меню кафе-бара Готика">
       <section class="hero">
         <div class="hero__smoke" aria-hidden="true"></div>
+        <div class="hero__top" aria-hidden="true">
+          <span class="round-mark round-mark--menu"><span></span></span>
+          <span class="brand-crest">G</span>
+          <span class="round-mark round-mark--sigil">✦</span>
+        </div>
         <div class="hero__inner">
-          <p class="hero__label">Gothika Hookah Lab</p>
+          <p class="hero__label">Gothika Lounge Bar</p>
           <h1>ГОТИКА</h1>
           <p class="hero__subtitle">Дым. Вкус. Атмосфера.</p>
-
-          <nav class="category-tabs" aria-label="Категории меню" id="categoryTabs"></nav>
         </div>
       </section>
 
@@ -26,8 +29,10 @@
             <input id="searchInput" type="search" placeholder="Найти блюдо, коктейль или кальян" autocomplete="off" />
           </label>
 
-          <div class="subcategories" aria-label="Подкатегории" id="subcategoryTabs"></div>
+          <nav class="category-tabs" aria-label="Категории меню" id="categoryTabs"></nav>
         </div>
+
+        <div class="subcategories" aria-label="Подкатегории" id="subcategoryTabs"></div>
 
         <section class="status-row">
           <div>
