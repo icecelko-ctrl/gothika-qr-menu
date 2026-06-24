@@ -25,6 +25,19 @@ const drinkSubcategories = new Set([
   "Пиво и вино"
 ]);
 
+const categoryIcons = {
+  popular:
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3c.2 2.7-1.7 3.8-3 5.5-1 1.3-1.4 2.8-1 4.6.7-1.2 1.7-2 3.2-2.5-.8 2.3.4 3.6 1.6 5 .7.8 1.2 1.6 1.1 2.7 1.9-1.1 3.1-3.1 3.1-5.5 0-3.4-2.5-5-5-9.8Z"/><path d="M8.8 15.5c-.4 2.6 1.4 5.5 4.4 5.5"/></svg>',
+  kitchen:
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v8"/><path d="M4.5 3v7.5c0 1.4 1.1 2.5 2.5 2.5s2.5-1.1 2.5-2.5V3"/><path d="M7 13v8"/><path d="M16.5 3c2.2 2.5 2.4 6.7.4 9.6-.5.7-.9 1.6-.9 2.5V21"/><path d="M19.5 3v18"/></svg>',
+  bar:
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14l-2 7a5 5 0 0 1-10 0L5 4Z"/><path d="M12 16v5"/><path d="M8 21h8"/></svg>',
+  hookah:
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v5"/><path d="M9 8h6"/><path d="M10 8l1 5h2l1-5"/><path d="M12 13v7"/><path d="M8 20h8"/><path d="M14 14c4 0 5 2 5 4 0 1.7-1.3 3-3 3"/><path d="M17 18h3"/></svg>',
+  promo:
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.4 5 5.6.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.6-.8L12 3Z"/><path d="M4 20h16"/></svg>'
+};
+
 function formatPrice(price) {
   return new Intl.NumberFormat("ru-RU").format(price) + " ₽";
 }
@@ -69,11 +82,29 @@ function getFilteredItems() {
   });
 }
 
-function createButton({ className, text, active, onClick }) {
+function createButton({ className, text, active, onClick, icon, id }) {
   const button = document.createElement("button");
   button.type = "button";
   button.className = active ? `${className} is-active` : className;
-  button.textContent = text;
+
+  if (id) {
+    button.dataset.category = id;
+  }
+
+  if (icon && categoryIcons[icon]) {
+    const iconElement = document.createElement("span");
+    iconElement.className = "tab__icon";
+    iconElement.innerHTML = categoryIcons[icon];
+
+    const label = document.createElement("span");
+    label.className = "tab__label";
+    label.textContent = text;
+
+    button.append(iconElement, label);
+  } else {
+    button.textContent = text;
+  }
+
   button.addEventListener("click", onClick);
   return button;
 }
@@ -86,6 +117,8 @@ function renderCategories() {
       createButton({
         className: "tab",
         text: category.name,
+        id: category.id,
+        icon: category.id,
         active: category.id === activeCategoryId,
         onClick: () => {
           activeCategoryId = category.id;
@@ -176,10 +209,18 @@ function createCard(item, index) {
   const imageWrap = document.createElement("div");
   imageWrap.className = "card-image";
 
-  const image = document.createElement("img");
-  image.src = item.image;
-  image.alt = item.name;
-  image.loading = "lazy";
+  if (item.image) {
+    const image = document.createElement("img");
+    image.src = item.image;
+    image.alt = item.name;
+    image.loading = "lazy";
+    imageWrap.append(image);
+  } else {
+    imageWrap.classList.add("card-image--fallback");
+    const fallback = document.createElement("span");
+    fallback.textContent = item.subcategoryName;
+    imageWrap.append(fallback);
+  }
 
   const tags = document.createElement("div");
   tags.className = "tags";
@@ -190,7 +231,7 @@ function createCard(item, index) {
     tags.append(tagElement);
   });
 
-  imageWrap.append(image, tags);
+  imageWrap.append(tags);
 
   const body = document.createElement("div");
   body.className = "card-body";
@@ -220,7 +261,8 @@ function createCard(item, index) {
   const detailsButton = document.createElement("button");
   detailsButton.type = "button";
   detailsButton.className = "details-btn";
-  detailsButton.textContent = "Подробнее";
+  detailsButton.textContent = "+";
+  detailsButton.setAttribute("aria-label", `Подробнее: ${item.name}`);
   detailsButton.addEventListener("click", () => openDetails(item));
 
   footer.append(priceBlock, detailsButton);
@@ -237,8 +279,8 @@ function updateHeadings(items) {
       ? null
       : category.subcategories.find((subcategory) => subcategory.id === activeSubcategoryId);
 
-  activeCategoryLabel.textContent = category.name;
-  activeSubcategoryLabel.textContent = activeSubcategory ? activeSubcategory.name : "Все позиции";
+  activeCategoryLabel.textContent = activeSubcategory ? category.name : "Меню";
+  activeSubcategoryLabel.textContent = activeSubcategory ? activeSubcategory.name : category.name;
   itemsCount.textContent = `${items.length} ${items.length === 1 ? "позиция" : "позиций"}`;
 }
 
