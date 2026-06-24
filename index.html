@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Готика | QR-меню</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <div class="hero__smoke" aria-hidden="true"></div>
+        <div class="hero__inner">
+          <p class="hero__label">Gothika Hookah Lab</p>
+          <h1>ГОТИКА</h1>
+          <p class="hero__subtitle">Дым. Вкус. Атмосфера.</p>
+
+          <nav class="category-tabs" aria-label="Категории меню" id="categoryTabs"></nav>
+        </div>
+      </section>
+
+      <section class="menu-shell">
+        <div class="controls">
+          <label class="search-box" aria-label="Поиск по меню">
+            <span aria-hidden="true"></span>
+            <input id="searchInput" type="search" placeholder="Найти блюдо, коктейль или кальян" autocomplete="off" />
+          </label>
+
+          <div class="subcategories" aria-label="Подкатегории" id="subcategoryTabs"></div>
+        </div>
+
+        <section class="status-row">
+          <div>
+            <p class="section-label" id="activeCategoryLabel">Кухня</p>
+            <h2 id="activeSubcategoryLabel">Все позиции</h2>
+          </div>
+          <span id="itemsCount">0 позиций</span>
+        </section>
+
+        <section class="menu-grid" id="menuGrid" aria-live="polite"></section>
+
+        <div class="empty-state" id="emptyState" hidden>
+          <h3>Ничего не найдено</h3>
+          <p>Попробуйте другой запрос или выберите соседнюю категорию.</p>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal" id="detailsModal" hidden>
+      <button class="modal__backdrop" type="button" aria-label="Закрыть"></button>
+      <article class="modal__card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button class="modal__close" type="button" aria-label="Закрыть">×</button>
+        <img id="modalImage" alt="" />
+        <div class="modal__body">
+          <p id="modalMeta"></p>
+          <h3 id="modalTitle"></h3>
+          <p id="modalDescription"></p>
+          <strong id="modalPrice"></strong>
+        </div>
+      </article>
+    </div>
+
+    <script src="menu-data.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
